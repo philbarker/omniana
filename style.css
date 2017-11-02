@@ -14,7 +14,8 @@
 
 /*
  1. front matter styles
- 2. article styles
+ 2. archive styles
+ 3. article styles
 */
 
 /* Front matter styles */
@@ -115,6 +116,23 @@ div.footer div.inner div.omni-right div.license-attribution p{
     font-size: 1em;
 }
 
+/* Archive stles */
+.taxonomy-main h2.entry-title {
+  margin: 0px;
+  text-align: left;
+  font-style: normal;
+  font-size: 1.2em;
+}
+.taxonomy-main h2.entry-title a {
+  text-decoration: none;
+}
+.taxonomy-main p {
+ display: block;
+ margin-left: 20px;
+ border: 0px;
+ padding: 0px;
+ line-height: 1.3em;
+}
 
 /* Article stles */
 h2.entry-title {
