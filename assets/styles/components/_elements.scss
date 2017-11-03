@@ -1,7 +1,73 @@
 // Elements
 
+$body-line-height: (
+  epub: 1.4em,
+  prince: 1.4em,
+  web: 1.4em,
+) !default;
+
+$h2-font-family: $font-1 !default;
+
+$para-align: (
+  epub: initial,
+  prince: justify,
+  web: justify
+) !default;
+
+$blockquote-font-size: 0.95em !default;
+$blockquote-margin-top: 0.5em !default;
+$blockquote-margin-right: 0 !default;
+$blockquote-margin-bottom: 0.5em !default;
+$blockquote-margin-left: 2.5em !default;
+$blockquote-line-height: 1.4em !default;
+$blockquote-font-style: italic !default;
+
 // Override variables above this line, using the !default flag to allow further overrides.
 @import 'variables/elements';
 
 // Add custom SCSS below these imports and includes.
 @import 'components/elements';
+
+div#content {
+  width: 410px;
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+blockquote {
+  background-color: transparent;
+  background-image: none;
+  border-width:  0px;
+  padding: 0px;
+}
+
+blockquote p {
+  padding: 0px;
+  font-size: 1em;
+  margin: 0px;
+}
+
+p.quotecite {
+$blockquote-margin-top: 0.5em !default;
+$blockquote-margin-right: 0 !default;
+$blockquote-margin-bottom: 0.5em !default;
+$blockquote-margin-left: 2.5em !default;
+
+  margin-top: 0px;
+  margin-bottom: 0.5em;
+  margin-left:2.5em;
+  font-style: italic;
+  text-align: right;
+}
+
+sup.footnote {
+  vertical-align: super;
+}
+
+div.footnotes {
+  font-size: 0.8em;
+  line-height: 1em;
+  margin-bottom: 1em;
+  margin-top: 1em;  
+}
+

@@ -1,7 +1,29 @@
 // Section Titles
 
+$section-title-font-family: "Times";
+$section-title-font-style: italic;
+$section-title-font-size:(
+  epub: 1.2em,
+  prince: 1.2em,
+  web: 1.2em
+) !default;
+$section-title-margin-bottom:(
+  epub: 1em,
+  prince: 1cm,
+  web: 1em
+) !default;
+
 // Override variables above this line, using the !default flag to allow further overrides.
 @import 'variables/section-titles';
 
 // Add custom SCSS below these imports and includes.
 @import 'components/section-titles';
+  
+div.title-page h1 {
+ font-family: "Arial";
+}
+
+div.contents p,
+div.title-page p {
+  text-align: center;
+}
