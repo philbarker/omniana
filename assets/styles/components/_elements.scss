@@ -28,12 +28,6 @@ $blockquote-font-style: italic !default;
 // Add custom SCSS below these imports and includes.
 @import 'components/elements';
 
-div#content {
-  width: 410px;
-  padding-left: 80px;
-  padding-right: 80px;
-}
-
 blockquote {
   background-color: transparent;
   background-image: none;
@@ -64,6 +58,10 @@ div.footnotes {
   line-height: 1em;
   margin-bottom: 1em;
   margin-top: 1em;  
+}
+
+div.printer-info {
+ margin-top: 400px;
 }
 
 .book-info-container,

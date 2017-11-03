@@ -19,11 +19,19 @@ $section-title-margin-bottom:(
 // Add custom SCSS below these imports and includes.
 @import 'components/section-titles';
   
-
-
+div.halftitle h1,
 div.title-page h1 {
- font-family: Canterbury;
+ font-family: $font-4;
+ text-transform: none;
+ font-size: 2.5em;
 }
+div.halftitle h2,
+div.title-page h2 {
+ font-family: $font-1;
+ text-transform: uppercase;
+ font-size: 2em;
+}
+
 
 div.contents p,
 div.title-page p {

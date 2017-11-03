@@ -10,6 +10,16 @@
  clear: both;
 }
 
+.single #content {
+  width: 410px;
+  min-height: 500px;
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+.title-page, .halftitle {
+ margin-top:100px
+}
 
 // formatting the footer on all pages //
 
