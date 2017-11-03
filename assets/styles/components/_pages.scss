@@ -6,8 +6,15 @@
 // Add custom SCSS below these imports and includes.
 @import 'components/pages';
 
+.clearfix {
+ clear: both;
+}
+
+
+// formatting the footer on all pages //
+
 div.footer div.inner {
- font-family: "Open Sans", Ariel, Helvetica, sans-serif;
+ font-family: $font-2;
  font-weight: normal;
  width: 800px;
  padding: 0px;

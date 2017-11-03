@@ -48,11 +48,6 @@ blockquote p {
 }
 
 p.quotecite {
-$blockquote-margin-top: 0.5em !default;
-$blockquote-margin-right: 0 !default;
-$blockquote-margin-bottom: 0.5em !default;
-$blockquote-margin-left: 2.5em !default;
-
   margin-top: 0px;
   margin-bottom: 0.5em;
   margin-left:2.5em;
@@ -70,4 +65,23 @@ div.footnotes {
   margin-bottom: 1em;
   margin-top: 1em;  
 }
+
+.book-info-container,
+.book-info-container h1,
+.book-info-container h2 {
+ font-family: $font-1;
+}
+.book-info-container .table-of-content {
+ font-family: $font-2;
+}
+.book-info .book-author {
+ font-family: $font-2;
+}
+li.front-matter a{
+ font-weight: bold;
+}
+li.chapter {
+ margin-top: 0px;
+}
+
 

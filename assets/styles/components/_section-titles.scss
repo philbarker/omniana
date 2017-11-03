@@ -1,6 +1,6 @@
 // Section Titles
 
-$section-title-font-family: "Times";
+$section-title-font-family: $font-1;
 $section-title-font-style: italic;
 $section-title-font-size:(
   epub: 1.2em,
@@ -19,8 +19,10 @@ $section-title-margin-bottom:(
 // Add custom SCSS below these imports and includes.
 @import 'components/section-titles';
   
+
+
 div.title-page h1 {
- font-family: "Arial";
+ font-family: Canterbury;
 }
 
 div.contents p,
