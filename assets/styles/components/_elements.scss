@@ -7,6 +7,7 @@ $body-line-height: (
 ) !default;
 
 $h2-font-family: $font-1 !default;
+$h1-font-family: $font-1 !default;
 
 $para-align: (
   epub: initial,
@@ -35,6 +36,10 @@ blockquote {
   padding: 0px;
 }
 
+table {
+ border: none;
+}
+
 blockquote p {
   padding: 0px;
   font-size: 1em;
@@ -55,7 +60,7 @@ sup.footnote {
 
 div.footnotes {
   font-size: 0.8em;
-  line-height: 1em;
+  line-height: 1.1em;
   margin-bottom: 1em;
   margin-top: 1em;  
 }
@@ -82,4 +87,16 @@ li.chapter {
  margin-top: 0px;
 }
 
-
+// meta links, page turning, edit button and the like //
+.edit-link {
+ margin-left: -135px;
+}
+.posts-navigation {
+ top: 360px;
+ width: 600px;
+ left: 613px
+}
+#sidebar {
+ margin-right: 115px;
+ top: 60px;
+}
