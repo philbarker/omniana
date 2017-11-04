@@ -66,7 +66,7 @@ div.footnotes {
 }
 
 div.printer-info {
- margin-top: 400px;
+ margin-top: 550px;
 }
 
 .book-info-container,
@@ -88,7 +88,7 @@ li.chapter {
 }
 
 // meta links, page turning, edit button and the like //
-
+@media screen and (min-width: 768px) {
  .edit-link {
   margin-left: -135px;
  }
@@ -105,4 +105,4 @@ li.chapter {
   margin-right: 100px;
   margin-top: 10px;
  }
-
+}

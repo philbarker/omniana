@@ -11,15 +11,20 @@
 }
 
 
-.single #content {
+.single #content,
+#content {
   width: 410px;
-  min-height: 500px;
+  min-height: 660px;
   padding-left: 80px;
   padding-right: 80px;
 }
 
-.title-page, .halftitle {
- margin-top:100px
+.title-page .entry-content, 
+.halftitle .entry-content {
+ margin-top:200px;
+}
+.halftitle .entry-content {
+ margin-bottom:200px;
 }
 
 // formatting the footer on all pages //
@@ -32,6 +37,7 @@
  padding-top: 30px;
 }
 
+@media screen and (min-width: 600px) {
 div.footer div.inner div.omni-left {
  float: left;
  width: 33%;
@@ -40,6 +46,7 @@ div.footer div.inner div.omni-left {
 div.footer div.inner div.omni-right {
  float: right;
  width: 66%;
+}
 }
 
 .omni-bookinfo, .cie-name{
