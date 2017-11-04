@@ -88,15 +88,21 @@ li.chapter {
 }
 
 // meta links, page turning, edit button and the like //
-.edit-link {
- margin-left: -135px;
-}
-.posts-navigation {
- top: 360px;
- width: 600px;
- left: 613px
-}
-#sidebar {
- margin-right: 115px;
- top: 60px;
-}
+
+ .edit-link {
+  margin-left: -135px;
+ }
+ .posts-navigation {
+  width: 600px;
+  margin-left: -300px;
+  left: 50%;
+  top: 33%;
+ }
+ #sidebar {
+  right: 12px;
+  top: 0px;
+  margin: 0px;
+  margin-right: 100px;
+  margin-top: 10px;
+ }
+

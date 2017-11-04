@@ -10,6 +10,7 @@
  clear: both;
 }
 
+
 .single #content {
   width: 410px;
   min-height: 500px;
@@ -23,10 +24,10 @@
 
 // formatting the footer on all pages //
 
-div.footer div.inner {
+.footer .inner {
  font-family: $font-2;
  font-weight: normal;
- width: 800px;
+ width: 80%;
  padding: 0px;
  padding-top: 30px;
 }
