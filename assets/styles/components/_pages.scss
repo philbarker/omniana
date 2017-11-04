@@ -10,6 +10,7 @@
  clear: both;
 }
 
+@media screen and (min-width: 768px) {
 
 .single #content,
 #content {
@@ -18,7 +19,7 @@
   padding-left: 80px;
   padding-right: 80px;
 }
-
+}
 .title-page .entry-content, 
 .halftitle .entry-content {
  margin-top:200px;
@@ -37,7 +38,7 @@
  padding-top: 30px;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 768px) {
 div.footer div.inner div.omni-left {
  float: left;
  width: 33%;
