@@ -11,15 +11,15 @@
 }
 
 @media screen and (min-width: 768px) {
+ .single #content,
+ #content {
+   width: 410px;
+   min-height: 660px;
+   padding-left: 80px;
+   padding-right: 80px;
+ }
+}
 
-.single #content,
-#content {
-  width: 410px;
-  min-height: 660px;
-  padding-left: 80px;
-  padding-right: 80px;
-}
-}
 .title-page .entry-content, 
 .halftitle .entry-content {
  margin-top:200px;
