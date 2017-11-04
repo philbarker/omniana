@@ -87,6 +87,25 @@ li.chapter {
  margin-top: 0px;
 }
 
+div.index-taxons {
+ font-family: Arial;
+ font-size: 0.8em;
+ background-color: #fff;
+ width: 200px;
+ padding: 0.5em;
+//sorting out shadow border
+ border-right-color: #666;
+ border-right-width: 3px;
+ h1, h2, h3, h4, h5, p, ul, li {
+  text-align: left;
+  margin-bottom: 0px;
+  margin-top: 0px;  
+ }
+ ul {
+  padding-left: 1em;
+ }
+}
+
 // meta links, page turning, edit button and the like //
 @media screen and (min-width: 768px) {
  .edit-link {
