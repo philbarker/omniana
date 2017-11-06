@@ -57,10 +57,10 @@
 
 					</div><!-- .entry-content -->
 				</div><!-- #post-## -->
+				<?php get_template_part( 'content', 'index-taxons' ); ?>
 
 
 				</div><!-- #content -->
-				<?php get_template_part( 'content', 'index-taxons' ); ?>
 				<?php
 				if ( pb_social_media_enabled() ) {
 					get_template_part( 'content', 'social-footer' );
