@@ -18,6 +18,10 @@
    padding-left: 80px;
    padding-right: 80px;
  }
+ #wrap {
+   width: 600px //fixes a problem with nav icons at med screen width
+ }
+ 
 }
 
 .title-page .entry-content, 
