@@ -182,3 +182,129 @@ function omniana_display_admin_page() {
 	echo '<div class="clear"></div>' . PHP_EOL;
 }
 
+function posts_by_taxon ( $atts ) {
+	$results = '<div><p>';
+
+	$taxonomies = get_taxonomies();
+	
+	if ( array_key_exists( 'debug', $atts ) )
+	{
+		$debug = ('true' === $atts['debug']);
+	} else {
+		$debug = false;
+	}
+
+	$tax_queries = array();
+	foreach ($taxonomies as $taxonomy) {
+		if ( array_key_exists( $taxonomy, $atts ) ) {
+			if ($debug) {
+				$results = $results.'Posts by taxon: '.$taxonomy.' = '.$atts[$taxonomy];
+			}
+			$tax_query = array(
+				'taxonomy' => $taxonomy,
+				'field' => 'slug',
+				'terms' => $atts[$taxonomy]
+			);
+			$tax_queries[] = $tax_query;
+		}
+	}
+	$results = $results.'</p>';
+
+	if ( array_key_exists( 'type', $atts ) )
+	{
+		$post_type = $atts['type'];
+	} else {
+		$post_type = get_post_types();
+	}		
+
+	if ( array_key_exists( 'orderby', $atts ) )
+	{
+		$orderby = $atts['orderby'];
+		if ( array_key_exists( 'order', $atts ) )
+		{
+			$order = strtoupper( $atts['order'] );
+		} else {
+			$order = 'ASC';
+		}
+	} else {
+		$orderby = null;
+		$order = null;
+	}
+	$query = array(
+		'tax_query'   => $tax_queries,
+		'posts_per_page' => -1,
+		'post_type'   => $post_type,
+		'orderby'     => $orderby,
+		'order'       => $order,
+		'post_status' => 'publish'
+		);
+	$posts_array = get_posts( $query );
+//	print_r( $posts_array );
+	foreach ( $posts_array as $post ) 	{
+		$url = esc_url( get_permalink( $post->ID ) );
+		$title = $post->post_title;
+		$linkitem = '<li><a href="'.$url.'">'.$title.'</a></li>';
+		$results = $results.$linkitem;
+	}
+	$results = $results.'</ul></div>';
+	return $results;
+}
+add_shortcode( 'posts_by_taxon', 'posts_by_taxon' );
+
+function list_taxa( $atts ) {
+	if ( array_key_exists( 'debug', $atts ) ) {
+		$debug = ('true' === $atts['debug']);
+	} else {
+		$debug = false;
+	}
+	if ( array_key_exists( 'taxonomy', $atts ) ) {
+		$taxonomy = $atts['taxonomy'];
+	} else {
+		return('error: use taxonomy="taxonomyname" parameter');
+	}
+	if ( array_key_exists( 'orderby', $atts ) )	{
+		$orderby = $atts['orderby'];
+		if ( array_key_exists( 'order', $atts ) )
+		{
+			$order = strtoupper( $atts['order'] );
+		} else {
+			$order = 'ASC';
+		}
+	} else {
+		$orderby = 'name';
+		$order = 'ASC';
+	}
+	if ( get_taxonomy( $taxonomy ) ) {
+		$query = array(
+			'taxonomy' => $taxonomy,
+			'orderby' => $orderby,
+			'order' => $order,
+		);
+		if ($debug) print_r( $query );
+		$terms = get_terms( $query);
+	} else {
+		return('<p>error: taxonomy "'.$taxonomy.'" does not exist</p>');
+	}
+	if (empty ( $terms ) ) {
+		return('<p>Taxonomy "'.$taxonomy.'" has no members</p>');
+	} else {
+		$results = "<ul>";
+		foreach ( $terms as $term ) {
+			if ($debug) {
+				echo('<p>');
+				print_r( $term );
+				echo('<\p>');
+			}
+			$name = $term->name;
+			$slug = $term->slug;
+			$url = get_term_link( $slug, $taxonomy );
+			$link = '<a href="'.$url.'">'.$name.'</a>';
+			$results = $results.'<li>'.$link.'</li>';
+		}
+		$results = $results.'</ul>';		
+		return( $results );
+	}
+}
+add_shortcode( 'list_taxa', 'list_taxa' );
+
+

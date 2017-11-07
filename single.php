@@ -17,7 +17,7 @@
 			$post_type = get_post_type();
 				?>
 			<?php if ( 'chapter' === $post_type ): ?>
-				<h2 class="entry-title"><?php
+				<h2 property="name" class="entry-title"><?php
 				$chapter_number = pb_get_chapter_number( $post->post_name );
 				if ( $chapter_number ) {
 					echo "<span>$chapter_number</span>  ";

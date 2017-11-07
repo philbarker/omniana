@@ -6,7 +6,7 @@ if ( pb_is_public() ) :
 				<?php if ( is_front_page() ) : ?>
 					<h2 class="entry-title"><?php the_title(); ?></h2>
 				<?php else : ?>
-					<h1 class="entry-title"><?php the_title(); ?></h1>
+					<h1 property="name" class="entry-title"><?php the_title(); ?></h1>
 				<?php endif; ?>
 				<div class="entry-content">
 					<?php edit_post_link( __( 'Edit', 'pressbooks-book' ), '<span class="edit-link">', '</span>' ); ?>
