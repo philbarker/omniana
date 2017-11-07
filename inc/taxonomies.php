@@ -70,31 +70,43 @@ add_action( 'init', 'register_omniana_taxonomies');
 function omniana_taxonomies_add_fields( $taxonomy ) {
     ?>
     <div class="form-field term-group">
-        <label for="wikidata_uri"><?php _e( 'Wikidata URI', 'omniana' ); ?></label>
-        <input type="url" id="wikidata_uri" name="wikidata_uri" />
+        <label for="wikidata_id"><?php _e( 'Wikidata ID', 'omniana' ); ?></label>
+        <input type="url" id="wikidata_id" name="wikidata_id" />
     </div>
     <?php
 }
 add_action( 'people_add_form_fields', 'omniana_taxonomies_add_fields', 10, 2 );
 add_action( 'places_add_form_fields', 'omniana_taxonomies_add_fields', 10, 2 );
 add_action( 'events_add_form_fields', 'omniana_taxonomies_add_fields', 10, 2 );
-add_action( 'works_add_form_fields', 'omniana_taxonomies_add_fields', 10, 2 );
+add_action( 'works_add_form_fields',  'omniana_taxonomies_add_fields', 10, 2 );
 
 function omniana_taxonomies_edit_meta_fields( $term, $taxonomy ) {
-    $wikidata_uri = get_term_meta( $term->term_id, 'wikidata_uri', true );
-    if ('' === $wikidata_uri) {
-    	$wikidata_uri = 'https://www.wikidata.org/wiki/Q';
-    }
+    $wikidata_id = get_term_meta( $term->term_id, 'wikidata_id', true );
+   	$args = array();
+    if ('' === $wikidata_id) {
+    	$wikidata_id = 'Q';
+    } else {
+	    $wikidata_api_uri = 'https://wikidata.org/entity/'.$wikidata_id.'.json';
+    	$json = file_get_contents( $wikidata_api_uri );
+    	$obj = json_decode($json);
+    	$args['name'] = $obj->entities->$wikidata_id->labels->en->value;
+    	$args['description'] = $obj->entities->$wikidata_id->descriptions->en->value;
+    	print('<p>Name and description are imported from wikidata</p>');
+//    	print_r( $obj->entities->$wikidata_id->descriptions->en->value );
+	}
+
     ?>
     <tr class="form-field term-group-wrap">
         <th scope="row">
-            <label for="wikidata_uri"><?php _e( 'Wikidata URI', 'omniana' ); ?></label>
+            <label for="wikidata_id"><?php _e( 'Wikidata ID', 'omniana' ); ?></label>
         </th>
         <td>
-            <input type="url" id="wikidata_uri" name="wikidata_uri" value="<?php echo $wikidata_uri; ?>" />
+            <input type="text" id="wikidata_id" name="wikidata_id" value="<?php echo $wikidata_id; ?>" />
         </td>
     </tr>
     <?php
+	wp_update_term( $term->term_id, $taxonomy, $args );
+
 }
 add_action( 'people_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
 add_action( 'places_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
@@ -102,8 +114,8 @@ add_action( 'events_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10
 add_action( 'works_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
 
 function omniana_taxonomies_save_taxonomy_meta( $term_id, $tag_id ) {
-    if( isset( $_POST['wikidata_uri'] ) ) {
-        update_term_meta( $term_id, 'wikidata_uri', esc_attr( $_POST['wikidata_uri'] ) );
+    if( isset( $_POST['wikidata_id'] ) ) {
+        update_term_meta( $term_id, 'wikidata_id', esc_attr( $_POST['wikidata_id'] ) );
     }
 }
 add_action( 'created_people', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
