@@ -18,7 +18,7 @@ function register_omniana_taxonomies() {
 
 	$place_args = array(
     	'labels' => array (
-	    	'name'          => 'place mentioned',
+	    	'name'          => 'places mentioned',
    			'singular name' => 'place mentioned',
     		'menu_name'     => 'places index'
     		),
