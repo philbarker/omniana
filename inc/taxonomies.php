@@ -1,69 +1,27 @@
 <?php
+function register_omniana_taxonomy($taxonomy, $type, $s_tag, $p_tag) {
+	$args = array(
+    	'labels' => array (
+	    	'name'          => $p_tag.' mentioned',
+   			'singular name' => $s_tag.' mentioned',
+    		'menu_name'     => $p_tag.' index'
+    		),
+    	'public'       => true,
+    	'hierarchical' => false,
+    	'show_admin_column' => true,
+    	'show_in_menu' => false,
+	    'rewrite'      => array( 'slug' => $p_tag ),
+	    'description'  => 'Indexing '.$p_tag.' who are mentioned in articles',
+	    'sort'         => true
+	    );
+	register_taxonomy( $taxonomy, $type, $args );
+}
+
 function register_omniana_taxonomies() {
-	$people_args = array(
-    	'labels' => array (
-	    	'name'          => 'people mentioned',
-   			'singular name' => 'person mentioned',
-    		'menu_name'     => 'people index'
-    		),
-    	'public'       => true,
-    	'hierarchical' => false,
-    	'show_admin_column' => true,
-    	'show_in_menu' => false,
-	    'rewrite'      => array( 'slug' => 'people' ),
-	    'description'  => 'Indexing people who are mentioned in articles',
-	    'sort'         => true
-	    );
-	register_taxonomy( 'people', 'chapter', $people_args );
-
-	$place_args = array(
-    	'labels' => array (
-	    	'name'          => 'places mentioned',
-   			'singular name' => 'place mentioned',
-    		'menu_name'     => 'places index'
-    		),
-    	'public'       => true,
-    	'hierarchical' => false,
-    	'show_admin_column' => true,
-    	'show_in_menu' => false,
-	    'rewrite'      => array( 'slug' => 'places' ),
-	    'description'  => 'Indexing places who are mentioned in articles',
-	    'sort'         => true
-	    );
-	register_taxonomy( 'places', 'chapter', $place_args );
-
-	$event_args = array(
-    	'labels' => array (
-	    	'name'          => 'event mentioned',
-   			'singular name' => 'event mentioned',
-    		'menu_name'     => 'events index'
-    		),
-    	'public'       => true,
-    	'hierarchical' => false,
-    	'show_admin_column' => true,
-    	'show_in_menu' => false,
-	    'rewrite'      => array( 'slug' => 'events' ),
-	    'description'  => 'Indexing events who are mentioned in articles',
-	    'sort'         => true
-	    );
-	register_taxonomy( 'events', 'chapter', $event_args );
-
-	$work_args = array(
-    	'labels' => array (
-	    	'name'          => 'works mentioned',
-   			'singular name' => 'work mentioned',
-    		'menu_name'     => 'works index'
-    		),
-    	'public'       => true,
-    	'hierarchical' => false,
-    	'show_admin_column' => true,
-    	'show_in_menu' => false,
-	    'rewrite'      => array( 'slug' => 'works' ),
-	    'description'  => 'Indexing works who are mentioned in articles',
-	    'sort'         => true
-	    );
-	register_taxonomy( 'works', 'chapter', $work_args );
-
+	register_omniana_taxonomy('people', 'chapter', 'person', 'people');
+	register_omniana_taxonomy('places', 'chapter', 'place', 'places');
+	register_omniana_taxonomy('events', 'chapter', 'event', 'events');
+	register_omniana_taxonomy('works', 'chapter', 'work', 'works');
 }
 add_action( 'init', 'register_omniana_taxonomies');
 
