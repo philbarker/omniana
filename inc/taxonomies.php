@@ -66,8 +66,8 @@ function omniana_display_admin_page() {
 function omniana_taxonomies_add_fields( $taxonomy ) {
     ?>
     <div class="form-field term-group">
-        <label for="wikidata_id"><?php _e( 'Wikidata ID', 'omniana' ); ?></label>
-        <input type="url" id="wikidata_id" name="wikidata_id" />
+        <label for="wd_id"><?php _e( 'Wikidata ID', 'omniana' ); ?></label>
+        <input type="url" id="wd_id" name="wd_id" />
     </div>
     <?php
 }
@@ -77,55 +77,59 @@ add_action( 'events_add_form_fields', 'omniana_taxonomies_add_fields', 10, 2 );
 add_action( 'works_add_form_fields',  'omniana_taxonomies_add_fields', 10, 2 );
 
 function omniana_taxonomies_edit_meta_fields( $term, $taxonomy ) {
-    $wikidata_id = get_term_meta( $term->term_id, 'wikidata_id', true );
-   	$args = array();
-    if ('' === $wikidata_id) {
-    	$wikidata_id = 'Q';
-    } else {
-	    $wikidata_api_uri = 'https://wikidata.org/entity/'.$wikidata_id.'.json';
-    	$json = file_get_contents( $wikidata_api_uri );
-    	$obj = json_decode($json);
-    	$claims = $obj->entities->$wikidata_id->claims;
-    	print_r( $claims->P569[0]->mainsnak->datavalue->value->time);
-		$args['birth_date'] = $obj->entities->$wikidata_id->claims->P569[0]->mainsnak->datavalue->value->time;
-    	$args['name'] = $obj->entities->$wikidata_id->labels->en->value;
-    	$args['description'] = $obj->entities->$wikidata_id->descriptions->en->value;
-    	print('<p>Name and description are imported from wikidata</p>');
-    	print_r( $obj->entities->$wikidata_id->descriptions->en->value );
-	}
-
+    $wd_id = get_term_meta( $term->term_id, 'wd_id', true );
     ?>
     <tr class="form-field term-group-wrap">
         <th scope="row">
-            <label for="wikidata_id"><?php _e( 'Wikidata ID', 'omniana' ); ?></label>
+            <label for="wd_id"><?php _e( 'Wikidata ID', 'omniana' ); ?></label>
         </th>
         <td>
-            <input type="text" id="wikidata_id" name="wikidata_id" value="<?php echo $wikidata_id; ?>" />
+            <input type="text" id="wd_id" name="wd_id" value="<?php echo $wd_id; ?>" />
         </td>
     </tr>
     <?php
-	wp_update_term( $term->term_id, $taxonomy, $args );
-
 }
 add_action( 'people_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
 add_action( 'places_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
 add_action( 'events_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
 add_action( 'works_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
 
-function omniana_taxonomies_save_taxonomy_meta( $term_id, $tag_id ) {
-    if( isset( $_POST['wikidata_id'] ) ) {
-        update_term_meta( $term_id, 'wikidata_id', esc_attr( $_POST['wikidata_id'] ) );
+function omniana_taxonomies_save_meta( $term_id, $tag_id ) {
+    if( isset( $_POST['wd_id'] ) ) {
+        update_term_meta( $term_id, 'wd_id', esc_attr( $_POST['wd_id'] ) );
     }
 }
-add_action( 'created_people', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
-add_action( 'edited_people', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
-add_action( 'created_places', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
-add_action( 'edited_places', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
-add_action( 'created_events', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
-add_action( 'edited_events', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
-add_action( 'created_works', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
-add_action( 'edited_works', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
+add_action( 'created_people', 'omniana_taxonomies_save_meta', 10, 2 );
+add_action( 'edited_people', 'omniana_taxonomies_save_meta', 10, 2 );
+add_action( 'created_places', 'omniana_taxonomies_save_meta', 10, 2 );
+add_action( 'edited_places', 'omniana_taxonomies_save_meta', 10, 2 );
+add_action( 'created_events', 'omniana_taxonomies_save_meta', 10, 2 );
+add_action( 'edited_events', 'omniana_taxonomies_save_meta', 10, 2 );
+add_action( 'created_works', 'omniana_taxonomies_save_meta', 10, 2 );
+add_action( 'edited_works', 'omniana_taxonomies_save_meta', 10, 2 );
 
+function omniana_get_people_wikidata($term, $taxonomy) {
+	$term_id = $term->term_id;
+    $wd_id = get_term_meta( $term_id, 'wd_id', true );
+    print('get wikidata');
+   	$args = array();
+    if ('' !== trim( $wd_id) ) {
+	    $wd_api_uri = 'https://wikidata.org/entity/'.$wd_id.'.json';
+    	$json = file_get_contents( $wd_api_uri );
+    	$obj = json_decode($json);
+    	$claims = $obj->entities->$wd_id->claims;
+    	print_r( $claims->P569[0]->mainsnak->datavalue->value->time);
+		$wd_birth_date = $claims->P569[0]->mainsnak->datavalue->value->time;
+    	$wd_name = $obj->entities->$wd_id->labels->en->value;
+    	$wd_description = $obj->entities->$wd_id->descriptions->en->value;
+    	print_r($args);
+    	update_term_meta( $term_id, 'wd_name', $wd_name );
+    	$args['description'] = $wd_description;
+    	$args['name'] = $wd_name;
+    	wp_update_term( $term_id, 'people', $args );
+	}
+}
+// add_action( 'people_pre_edit_form' 'omniana_get_people_wikidata' )
 
 function posts_by_taxon ( $atts ) {
 	$results = '<div><p>';
