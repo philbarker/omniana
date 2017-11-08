@@ -1,5 +1,5 @@
 <?php
-function register_omniana_taxonomy($taxonomy, $type, $s_tag, $p_tag) {
+function register_omni_taxonomy($taxonomy, $type, $s_tag, $p_tag) {
 	$args = array(
     	'labels' => array (
 	    	'name'          => $p_tag.' mentioned',
@@ -17,15 +17,15 @@ function register_omniana_taxonomy($taxonomy, $type, $s_tag, $p_tag) {
 	register_taxonomy( $taxonomy, $type, $args );
 }
 
-function register_omniana_taxonomies() {
-	register_omniana_taxonomy('people', 'chapter', 'person', 'people');
-	register_omniana_taxonomy('places', 'chapter', 'place', 'places');
-	register_omniana_taxonomy('events', 'chapter', 'event', 'events');
-	register_omniana_taxonomy('works', 'chapter', 'work', 'works');
+function register_omni_taxonomies() {
+	register_omni_taxonomy('people', 'chapter', 'person', 'people');
+	register_omni_taxonomy('places', 'chapter', 'place', 'places');
+	register_omni_taxonomy('events', 'chapter', 'event', 'events');
+	register_omni_taxonomy('works', 'chapter', 'work', 'works');
 }
-add_action( 'init', 'register_omniana_taxonomies');
+add_action( 'init', 'register_omni_taxonomies');
 
-function omniana_add_taxonomy_admin_submenu($taxonomy, $title, $type) {
+function omni_add_taxonomy_admin_submenu($taxonomy, $title, $type) {
 	add_submenu_page(  
 			'taxonomies',
 			'',
@@ -36,24 +36,24 @@ function omniana_add_taxonomy_admin_submenu($taxonomy, $title, $type) {
 		);
 }
 
-function omniana_add_admin_menus() {
-	$page_title = 'Taxonmies';
-	$menu_title = 'Taxonmies';
+function omni_add_admin_menus() {
+	$page_title = 'Taxonomies';
+	$menu_title = 'Taxonomies';
 	$capability = 'post';
 	$menu_slug  = 'taxonomies';
-	$function   = 'omniana_display_admin_page';// Callback function which displays the page content.
+	$function   = 'omni_display_admin_page';// Callback function which displays the page content.
 	$icon_url   = 'dashicons-admin-page';
 	$position   = 10;
 	
 	add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-	omniana_add_taxonomy_admin_submenu('people', 'people mentioned', 'chapter');
-	omniana_add_taxonomy_admin_submenu('events', 'events mentioned', 'chapter');
-	omniana_add_taxonomy_admin_submenu('places', 'places mentioned', 'chapter');
-	omniana_add_taxonomy_admin_submenu('works',  'works mentioned', 'chapter');
+	omni_add_taxonomy_admin_submenu('people', 'people mentioned', 'chapter');
+	omni_add_taxonomy_admin_submenu('events', 'events mentioned', 'chapter');
+	omni_add_taxonomy_admin_submenu('places', 'places mentioned', 'chapter');
+	omni_add_taxonomy_admin_submenu('works',  'works mentioned', 'chapter');
 }
-add_action( 'admin_menu', 'omniana_add_admin_menus', 1 );
+add_action( 'admin_menu', 'omni_add_admin_menus', 1 );
 
-function omniana_display_admin_page() {
+function omni_display_admin_page() {
         # Display custom admin page content from newly added custom admin menu.
 	echo '<div class="wrap">' . PHP_EOL;
 	echo '<h2>Index Taxonomies</h2>' . PHP_EOL;
@@ -63,7 +63,7 @@ function omniana_display_admin_page() {
 }
 
 
-function omniana_taxonomies_add_fields( $taxonomy ) {
+function omni_taxonomies_add_fields( $taxonomy ) {
     ?>
     <div class="form-field term-group">
         <label for="wd_id"><?php _e( 'Wikidata ID', 'omniana' ); ?></label>
@@ -71,12 +71,12 @@ function omniana_taxonomies_add_fields( $taxonomy ) {
     </div>
     <?php
 }
-add_action( 'people_add_form_fields', 'omniana_taxonomies_add_fields', 10, 2 );
-add_action( 'places_add_form_fields', 'omniana_taxonomies_add_fields', 10, 2 );
-add_action( 'events_add_form_fields', 'omniana_taxonomies_add_fields', 10, 2 );
-add_action( 'works_add_form_fields',  'omniana_taxonomies_add_fields', 10, 2 );
+add_action( 'people_add_form_fields', 'omni_taxonomies_add_fields', 10, 2 );
+add_action( 'places_add_form_fields', 'omni_taxonomies_add_fields', 10, 2 );
+add_action( 'events_add_form_fields', 'omni_taxonomies_add_fields', 10, 2 );
+add_action( 'works_add_form_fields',  'omni_taxonomies_add_fields', 10, 2 );
 
-function omniana_taxonomies_edit_meta_fields( $term, $taxonomy ) {
+function omni_taxonomies_edit_fields( $term, $taxonomy ) {
     $wd_id = get_term_meta( $term->term_id, 'wd_id', true );
     ?>
     <tr class="form-field term-group-wrap">
@@ -89,26 +89,26 @@ function omniana_taxonomies_edit_meta_fields( $term, $taxonomy ) {
     </tr>
     <?php
 }
-add_action( 'people_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
-add_action( 'places_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
-add_action( 'events_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
-add_action( 'works_edit_form_fields', 'omniana_taxonomies_edit_meta_fields', 10, 2 );
+add_action( 'people_edit_form_fields', 'omni_taxonomies_meta_fields', 10, 2 );
+add_action( 'places_edit_form_fields', 'omni_taxonomies_meta_fields', 10, 2 );
+add_action( 'events_edit_form_fields', 'omni_taxonomies_meta_fields', 10, 2 );
+add_action( 'works_edit_form_fields', 'omni_taxonomies_meta_fields', 10, 2 );
 
-function omniana_taxonomies_save_meta( $term_id, $tag_id ) {
+function omni_taxonomies_save_meta( $term_id, $tag_id ) {
     if( isset( $_POST['wd_id'] ) ) {
         update_term_meta( $term_id, 'wd_id', esc_attr( $_POST['wd_id'] ) );
     }
 }
-add_action( 'created_people', 'omniana_taxonomies_save_meta', 10, 2 );
-add_action( 'edited_people', 'omniana_taxonomies_save_meta', 10, 2 );
-add_action( 'created_places', 'omniana_taxonomies_save_meta', 10, 2 );
-add_action( 'edited_places', 'omniana_taxonomies_save_meta', 10, 2 );
-add_action( 'created_events', 'omniana_taxonomies_save_meta', 10, 2 );
-add_action( 'edited_events', 'omniana_taxonomies_save_meta', 10, 2 );
-add_action( 'created_works', 'omniana_taxonomies_save_meta', 10, 2 );
-add_action( 'edited_works', 'omniana_taxonomies_save_meta', 10, 2 );
+add_action( 'created_people', 'omni_taxonomies_save_meta', 10, 2 );
+add_action( 'edited_people', 'omni_taxonomies_save_meta', 10, 2 );
+add_action( 'created_places', 'omni_taxonomies_save_meta', 10, 2 );
+add_action( 'edited_places', 'omni_taxonomies_save_meta', 10, 2 );
+add_action( 'created_events', 'omni_taxonomies_save_meta', 10, 2 );
+add_action( 'edited_events', 'omni_taxonomies_save_meta', 10, 2 );
+add_action( 'created_works', 'omni_taxonomies_save_meta', 10, 2 );
+add_action( 'edited_works', 'omni_taxonomies_save_meta', 10, 2 );
 
-function omniana_get_people_wikidata($term, $taxonomy) {
+function omni_get_people_wikidata($term, $taxonomy) {
 	$term_id = $term->term_id;
     $wd_id = get_term_meta( $term_id, 'wd_id', true );
     print('get wikidata');
@@ -129,7 +129,7 @@ function omniana_get_people_wikidata($term, $taxonomy) {
     	wp_update_term( $term_id, 'people', $args );
 	}
 }
-// add_action( 'people_pre_edit_form' 'omniana_get_people_wikidata' )
+// add_action( 'people_pre_edit_form' 'omni_get_people_wikidata' )
 
 function posts_by_taxon ( $atts ) {
 	$results = '<div><p>';
