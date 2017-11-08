@@ -89,15 +89,16 @@ function omni_taxonomies_edit_fields( $term, $taxonomy ) {
     </tr>
     <?php
 }
-add_action( 'people_edit_form_fields', 'omni_taxonomies_meta_fields', 10, 2 );
-add_action( 'places_edit_form_fields', 'omni_taxonomies_meta_fields', 10, 2 );
-add_action( 'events_edit_form_fields', 'omni_taxonomies_meta_fields', 10, 2 );
-add_action( 'works_edit_form_fields', 'omni_taxonomies_meta_fields', 10, 2 );
+add_action( 'people_edit_form_fields', 'omni_taxonomies_edit_fields', 10, 2 );
+add_action( 'places_edit_form_fields', 'omni_taxonomies_edit_fields', 10, 2 );
+add_action( 'events_edit_form_fields', 'omni_taxonomies_edit_fields', 10, 2 );
+add_action( 'works_edit_form_fields', 'omni_taxonomies_edit_fields', 10, 2 );
 
 function omni_taxonomies_save_meta( $term_id, $tag_id ) {
     if( isset( $_POST['wd_id'] ) ) {
         update_term_meta( $term_id, 'wd_id', esc_attr( $_POST['wd_id'] ) );
     }
+    print( $tag_id );
 }
 add_action( 'created_people', 'omni_taxonomies_save_meta', 10, 2 );
 add_action( 'edited_people', 'omni_taxonomies_save_meta', 10, 2 );
