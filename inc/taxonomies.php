@@ -25,6 +25,44 @@ function register_omniana_taxonomies() {
 }
 add_action( 'init', 'register_omniana_taxonomies');
 
+function omniana_add_taxonomy_admin_submenu($taxonomy, $title, $type) {
+	add_submenu_page(  
+			'taxonomies',
+			'',
+			$title,
+			'',
+			'edit-tags.php?taxonomy='.$taxonomy.'&post_type='.$type,
+			null
+		);
+}
+
+function omniana_add_admin_menus() {
+	$page_title = 'Taxonmies';
+	$menu_title = 'Taxonmies';
+	$capability = 'post';
+	$menu_slug  = 'taxonomies';
+	$function   = 'omniana_display_admin_page';// Callback function which displays the page content.
+	$icon_url   = 'dashicons-admin-page';
+	$position   = 10;
+	
+	add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
+	omniana_add_taxonomy_admin_submenu('people', 'people mentioned', 'chapter');
+	omniana_add_taxonomy_admin_submenu('events', 'events mentioned', 'chapter');
+	omniana_add_taxonomy_admin_submenu('places', 'places mentioned', 'chapter');
+	omniana_add_taxonomy_admin_submenu('works',  'works mentioned', 'chapter');
+}
+add_action( 'admin_menu', 'omniana_add_admin_menus', 1 );
+
+function omniana_display_admin_page() {
+        # Display custom admin page content from newly added custom admin menu.
+	echo '<div class="wrap">' . PHP_EOL;
+	echo '<h2>Index Taxonomies</h2>' . PHP_EOL;
+	echo '<p>Choose taxonomy to edit.</p>' . PHP_EOL;
+	echo '</div><!-- end .wrap -->' . PHP_EOL;
+	echo '<div class="clear"></div>' . PHP_EOL;
+}
+
+
 function omniana_taxonomies_add_fields( $taxonomy ) {
     ?>
     <div class="form-field term-group">
@@ -47,10 +85,13 @@ function omniana_taxonomies_edit_meta_fields( $term, $taxonomy ) {
 	    $wikidata_api_uri = 'https://wikidata.org/entity/'.$wikidata_id.'.json';
     	$json = file_get_contents( $wikidata_api_uri );
     	$obj = json_decode($json);
+    	$claims = $obj->entities->$wikidata_id->claims;
+    	print_r( $claims->P569[0]->mainsnak->datavalue->value->time);
+		$args['birth_date'] = $obj->entities->$wikidata_id->claims->P569[0]->mainsnak->datavalue->value->time;
     	$args['name'] = $obj->entities->$wikidata_id->labels->en->value;
     	$args['description'] = $obj->entities->$wikidata_id->descriptions->en->value;
     	print('<p>Name and description are imported from wikidata</p>');
-//    	print_r( $obj->entities->$wikidata_id->descriptions->en->value );
+    	print_r( $obj->entities->$wikidata_id->descriptions->en->value );
 	}
 
     ?>
@@ -85,72 +126,6 @@ add_action( 'edited_events', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
 add_action( 'created_works', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
 add_action( 'edited_works', 'omniana_taxonomies_save_taxonomy_meta', 10, 2 );
 
-function omniana_add_admin_menus() {
-	$page_title = 'Taxonmies';
-	$menu_title = 'Taxonmies';
-	$capability = 'post';
-	$menu_slug  = 'taxonomies';
-	$function   = 'omniana_display_admin_page';// Callback function which displays the page content.
-	$icon_url   = 'dashicons-admin-page';
-	$position   = 10;
-	
-	add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-
-	$submenu_pages = array(
-		array(
-			'parent_slug' => $menu_slug,
-			'page_title'  => '',
-			'menu_title'  => 'people mentioned',
-			'capability'  => '',
-			'menu_slug'   => 'edit-tags.php?taxonomy=people&post_type=chapter',
-			'function'    => null,
-		),
-		array(
-			'parent_slug' => $menu_slug,
-			'page_title'  => '',
-			'menu_title'  => 'events mentioned',
-			'capability'  => '',
-			'menu_slug'   => 'edit-tags.php?taxonomy=events&post_type=chapter',
-			'function'    => null,
-		),
-		array(
-			'parent_slug' => $menu_slug,
-			'page_title'  => '',
-			'menu_title'  => 'places mentioned',
-			'capability'  => '',
-			'menu_slug'   => 'edit-tags.php?taxonomy=places&post_type=chapter',
-			'function'    => null,
-		),
-		array(
-			'parent_slug' => $menu_slug,
-			'page_title'  => '',
-			'menu_title'  => 'works mentioned',
-			'capability'  => '',
-			'menu_slug'   => 'edit-tags.php?taxonomy=works&post_type=chapter',
-			'function'    => null,
-		),
-	);
-	foreach ( $submenu_pages as $submenu) {
-		add_submenu_page(  
-			$submenu['parent_slug'],
-			$submenu['page_title'],
-			$submenu['menu_title'],
-			$submenu['capability'],
-			$submenu['menu_slug'],
-			$submenu['function']
-		);
-	}
-}
-add_action( 'admin_menu', 'omniana_add_admin_menus', 1 );
-
-function omniana_display_admin_page() {
-        # Display custom admin page content from newly added custom admin menu.
-	echo '<div class="wrap">' . PHP_EOL;
-	echo '<h2>Index Taxonomies</h2>' . PHP_EOL;
-	echo '<p>Choose taxonomy to edit.</p>' . PHP_EOL;
-	echo '</div><!-- end .wrap -->' . PHP_EOL;
-	echo '<div class="clear"></div>' . PHP_EOL;
-}
 
 function posts_by_taxon ( $atts ) {
 	$results = '<div><p>';
