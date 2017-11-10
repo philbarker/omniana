@@ -82,17 +82,6 @@ function omni_taxonomies_edit_fields( $term, $taxonomy ) {
     $wd_description = get_term_meta( $term->term_id, 'wd_description', true ); 
 //JavaScript required so that name and description fields are updated 
     ?>
-    <script>
-	  var f = document.getElementById("edittag");
-	  var n = document.getElementById("name");
-  	  var d = document.getElementById("description");
-  	  function updateFields() {
-  		n.value = "<?php echo($wd_name) ?>";
-  		d.innerHTML = "<?php echo($wd_description) ?>";
-  	  }
-
-	  f.onsubmit=updateFields();
-	</script>
     <tr class="form-field term-group-wrap">
         <th scope="row">
             <label for="wd_id"><?php _e( 'Wikidata ID', 'omniana' ); ?></label>
@@ -101,6 +90,20 @@ function omni_taxonomies_edit_fields( $term, $taxonomy ) {
             <input type="text" id="wd_id"  name="wd_id" value="<?php echo $wd_id; ?>" />
         </td>
     </tr>
+    <script>
+	  var f = document.getElementById("edittag");
+  	  function updateFields() {
+	  	var i = document.getElementById("wd_id");
+	  	var n = document.getElementById("name");
+  	  	var d = document.getElementById("description");
+  		if (i.value.charAt(0) == "Q") {
+	  		n.value = "<?php echo($wd_name) ?>";
+  			d.innerHTML = "<?php echo($wd_description) ?>";
+  		}
+  	  }
+	  f.onsubmit=updateFields();
+	</script>
+
     <?php
 }
 add_action( 'people_edit_form_fields', 'omni_taxonomies_edit_fields', 10, 2 );
