@@ -77,9 +77,13 @@ add_action( 'events_add_form_fields', 'omni_taxonomies_add_fields', 10, 2 );
 add_action( 'works_add_form_fields',  'omni_taxonomies_add_fields', 10, 2 );
 
 function omni_taxonomies_edit_fields( $term, $taxonomy ) {
-    $wd_id = get_term_meta( $term->term_id, 'wd_id', true );
+    $wd_id = ucfirst( get_term_meta( $term->term_id, 'wd_id', true ) );
     $wd_name = get_term_meta( $term->term_id, 'wd_name', true ); 
     $wd_description = get_term_meta( $term->term_id, 'wd_description', true ); 
+    $wd_birth_year  = get_term_meta( $term->term_id, 'wd_birth_year', true );
+    $wd_birth_place  = get_term_meta( $term->term_id, 'wd_birth_place', true );
+    $wd_death_year  = get_term_meta( $term->term_id, 'wd_death_year', true );
+    $wd_death_place  = get_term_meta( $term->term_id, 'wd_death_place', true );
 //JavaScript required so that name and description fields are updated 
     ?>
     <tr class="form-field term-group-wrap">
@@ -87,9 +91,25 @@ function omni_taxonomies_edit_fields( $term, $taxonomy ) {
             <label for="wd_id"><?php _e( 'Wikidata ID', 'omniana' ); ?></label>
         </th>
         <td>
-            <input type="text" id="wd_id"  name="wd_id" value="<?php echo $wd_id; ?>" />
+            <input type="text" id="wd_id"  name="wd_id" 
+            	   value="<?php echo ucfirst($wd_id); ?>" />
         </td>
     </tr>
+    <tr class="form-field term-group-wrap">
+    	<th>From Wikidata</th>
+        <td><strong>Born: </strong><?php echo $wd_birth_year; ?>.
+        	                     <?php echo $wd_birth_place ?>.
+        </td>
+    </tr>
+    <tr class="form-field term-group-wrap">
+    	<td></td>
+        <td><strong>Died: </strong><?php echo $wd_death_year; ?>.
+        	                     <?php echo $wd_death_place; ?>.
+        </td>
+    </tr>
+
+
+
     <script>
 	  var f = document.getElementById("edittag");
   	  function updateFields() {
@@ -113,7 +133,10 @@ add_action( 'works_edit_form_fields', 'omni_taxonomies_edit_fields', 10, 2 );
 
 function omni_taxonomies_save_meta( $term_id, $tag_id ) {
     if( isset( $_POST['wd_id'] ) ) {
-        update_term_meta( $term_id, 'wd_id', esc_attr( $_POST['wd_id'] ) );
+        update_term_meta( 
+        	$term_id, 'wd_id', 
+        	ucfirst( esc_attr( $_POST['wd_id'] ) ) 
+        );
     }
 }
 add_action( 'created_people', 'omni_taxonomies_save_meta', 10, 2 );
@@ -126,7 +149,7 @@ add_action( 'created_works', 'omni_taxonomies_save_meta', 10, 2 );
 add_action( 'edited_works', 'omni_taxonomies_save_meta', 10, 2 );
 
 function omni_get_wikidata($wd_id) {
-    print('getting wikidata<br />');
+	if (WP_DEBUG) print('getting wikidata<br />');
     if ('' !== trim( $wd_id) ) {
 	    $wd_api_uri = 'https://wikidata.org/entity/'.$wd_id.'.json';
     	$json = file_get_contents( $wd_api_uri );
@@ -145,9 +168,34 @@ function get_wikidata_value($claim, $datatype) {
 	}
 }
 
-function omni_get_people_wikidata($term) {
+function omni_wd_year($wd_time) {
+	$wd_year = explode( '-', get_wikidata_value( $wd_time, 'time') )[0];
+	if ( substr($wd_year, 0, 1) == '+' ) {
+		$wd_year = substr( $wd_year, 1, strlen( $wd_year ) );
+	}
+	return $wd_year;
+}
+function omni_wd_place( $place_claim, $c=false) {
+	//$c is used to stop recursion for countries
+	$wd_place_id = get_wikidata_value( $place_claim, 'id' );
+	// this is wikidata Qcode for place, 
+	// get name of place from Qcode
+   	$wikidata = omni_get_wikidata($wd_place_id);
+	$wd_place_name=$wikidata->entities->$wd_place_id->labels->en->value;
+	$place_claims = $wikidata->entities->$wd_place_id->claims;
+	// get country of place	where available, & where place is not a country
+	if ( isset ($place_claims->P17[0]) && ($c) ) {   //P17 is country
+		$wd_country = omni_wd_place( $place_claims->P17[0], $c=false );
+		$wd_place_name = $wd_place_name.', '.$wd_country;
+	}
+	//idea: return array of Qcode, town & country
+	return $wd_place_name;
+	
+}
+
+function omni_get_people_wikidata( $term ) {
 	$term_id = $term->term_id;
-    $wd_id = get_term_meta( $term_id, 'wd_id', true );
+    $wd_id = ucfirst( get_term_meta( $term_id, 'wd_id', true ) );
    	$args = array();
    	$wikidata = omni_get_wikidata($wd_id);
    	if ( $wikidata ) {
@@ -155,21 +203,40 @@ function omni_get_people_wikidata($term) {
     	$wd_description = $wikidata->entities->$wd_id->descriptions->en->value;
     	$claims = $wikidata->entities->$wd_id->claims;
    		$type = get_wikidata_value($claims->P31[0], 'id');
+   		// check if human
    		if ( 'Q5' === $type ) {
-			if ( isset ($claims->P569[0] ) ) {
-				$wd_birth_date = get_wikidata_value($claims->P569[0], 'time');
-				print( $wd_birth_date.'<br/>' );
+			if ( isset ($claims->P569[0] ) ) {   //P569 is date of birth
+				$wd_birth_year = omni_wd_year( $claims->P569[0] );
 			}
-   		} else {
+			if ( isset ($claims->P569[0] ) ) {   //P570 is date of death
+				$wd_death_year = omni_wd_year( $claims->P570[0] );
+			}
+			if ( isset ($claims->P19[0] ) ) {   //P19 is place of birth
+				$wd_birth_place = omni_wd_place( $claims->P19[0], true );
+			}
+			if ( isset ($claims->P20[0] ) ) {   //P20 is place of birth
+				$wd_death_place = omni_wd_place( $claims->P20[0], true );
+			}
+			$args['description'] = $wd_description;
+    		$args['name'] = $wd_name;
+			if (WP_DEBUG) {
+				print_r( $args );print('<br />');
+				print( $wd_birth_year.'<br/>' );
+				print( $wd_death_year.'<br/>' );
+			}
+    		update_term_meta( $term_id, 'wd_name', $wd_name );
+    		update_term_meta( $term_id, 'wd_description', $wd_description );
+    		update_term_meta( $term_id, 'wd_birth_year',  $wd_birth_year );
+    		update_term_meta( $term_id, 'wd_birth_place', $wd_birth_place );
+    		update_term_meta( $term_id, 'wd_death_year',  $wd_death_year );
+    		update_term_meta( $term_id, 'wd_death_place', $wd_death_place );
+    	
+    		wp_update_term( $term_id, 'people', $args );
+
+   		} else { // not human
 	   		echo(' Warning: that wikidata is not for a human, check the ID. ');
 	   		echo(' <br /> ');
    		} 
-    	$args['description'] = $wd_description;
-    	$args['name'] = $wd_name;
-		print_r( $args );print('<br />');
-    	update_term_meta( $term_id, 'wd_name', $wd_name );
-    	update_term_meta( $term_id, 'wd_description', $wd_description );
-    	wp_update_term( $term_id, 'people', $args );
     	
    	} else {
    		echo(' Warning: no wikidata for you, check the Wikidata ID. ');
