@@ -168,13 +168,25 @@ function get_wikidata_value($claim, $datatype) {
 	}
 }
 
-function omni_wd_year($wd_time) {
-	$wd_year = explode( '-', get_wikidata_value( $wd_time, 'time') )[0];
-	if ( substr($wd_year, 0, 1) == '+' ) {
-		$wd_year = substr( $wd_year, 1, strlen( $wd_year ) );
+function strip_zero($year_in) {
+	if ('0' !== substr( $year_in, 0, 1 ) ) {
+		return $year_in;
+	} else {
+		$year = substr( $year_in, 1, strlen($year_in) );
+		return strip_zero( $year) ;
 	}
-	return $wd_year;
 }
+
+function omni_wd_year($wd_time) {
+	$BCE = '';
+	$wd_year = get_wikidata_value( $wd_time, 'time');
+	if ( substr($wd_year, 0, 1) == '-' ) {
+		$BCE = ' BCE';
+	}
+	$year = strip_zero(substr($wd_year, 1, 4) );
+	return $year.$BCE;
+}
+
 function omni_wd_place( $place_claim, $c=false) {
 	//$c is used to stop recursion for countries
 	$wd_place_id = get_wikidata_value( $place_claim, 'id' );
