@@ -41,8 +41,13 @@ if ( $paged >= 2 || $page >= 2 ) {
 </head>
 <?php if ( is_front_page() ) {
 	$schema = 'vocab="http://schema.org/" typeof="Book" resource="'.get_permalink().'"';
+} elseif ( is_archive() ) {
+	$schema = '';
+} elseif ( 'chapter' === get_post_type() && (!is_archive() ) ) {
+	$schema = 'vocab="http://schema.org/" typeof="Chapter" 
+	           resource="'.get_permalink().'"';
 } else {
-	$schema = 'vocab="http://schema.org/" typeof="Chapter" resource="'.get_permalink().'"';;
+	$schema ='';
 } ?>
 <body <?php body_class();
 if ( wp_title( '', false ) !== '' ) { print ' id="' . str_replace( ' ', '', strtolower( wp_title( '', false ) ) ) . '"'; } ?> <?php echo $schema; ?>>

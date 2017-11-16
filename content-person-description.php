@@ -33,7 +33,7 @@ if (! empty($term_md['wd_death_place'][0]) )
 	                               
 // output title and description of person
 if ( $schema_name ) {
-	echo( '<h1 class="page-title">'.$schema_name.'</h1>' );
+	echo( '<h1 class="page-title">People Mentioned: '.$schema_name.'</h1>' );
 } else {
 	the_archive_title( '<h1 class="page-title">', '</h1>' );
 }
@@ -54,5 +54,4 @@ if ( $schema_description ) {
 } else {
 	the_archive_description( '<p class="page-description">', '</p>' );
 }
-echo( '<p class="page-description">Mentioned in the following articles.</p>' );
 ?>

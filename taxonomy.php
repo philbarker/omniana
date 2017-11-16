@@ -37,7 +37,8 @@ get_header(); ?>
 	}
 	?>
 	</header>
-	<main id="main" class="taxonomy-main" property="">
+	<main id="main" class="taxonomy-main">
+		<p>Mentioned in the following articles.</p>
 	<?php
 		/* start the loop */
 		while ( have_posts() ) : the_post();

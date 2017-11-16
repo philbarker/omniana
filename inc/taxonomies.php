@@ -84,7 +84,8 @@ function omni_taxonomies_edit_fields( $term, $taxonomy ) {
     $wd_birth_place  = get_term_meta( $term->term_id, 'wd_birth_place', true );
     $wd_death_year  = get_term_meta( $term->term_id, 'wd_death_year', true );
     $wd_death_place  = get_term_meta( $term->term_id, 'wd_death_place', true );
-//JavaScript required so that name and description fields are updated 
+    $wd_VIAF  = get_term_meta( $term->term_id, 'wd_VIAF', true );
+    $wd_ISNI  = get_term_meta( $term->term_id, 'wd_ISNI', true );
     ?>
     <tr class="form-field term-group-wrap">
         <th scope="row">
@@ -107,9 +108,15 @@ function omni_taxonomies_edit_fields( $term, $taxonomy ) {
         	                     <?php echo $wd_death_place; ?>.
         </td>
     </tr>
+    <tr class="form-field term-group-wrap">
+    	<td></td>
+        <td><strong>Identifiers: </strong> VIAF <?php echo $wd_VIAF; ?>;
+        	                     ISNI <?php echo $wd_ISNI; ?>.
+        </td>
+    </tr>
 
 
-
+<!--JavaScript required so that name and description fields are updated-->
     <script>
 	  var f = document.getElementById("edittag");
   	  function updateFields() {
@@ -160,11 +167,19 @@ function omni_get_wikidata($wd_id) {
 	}
 }
 
-function get_wikidata_value($claim, $datatype) {
-	if ( isset( $claim->mainsnak->datavalue->value->$datatype ) ) {
-		return $claim->mainsnak->datavalue->value->$datatype;
+function get_wikidata_value($claim, $datatype=false) {
+	if ($datatype) {
+		if ( isset( $claim->mainsnak->datavalue->value->$datatype ) ) {
+			return $claim->mainsnak->datavalue->value->$datatype;
+		} else {
+			return false;
+		}
 	} else {
-		return false;
+		if ( isset( $claim->mainsnak->datavalue->value ) ) {	
+			return $claim->mainsnak->datavalue->value;
+		} else {
+			return false;
+		}
 	}
 }
 
@@ -229,6 +244,13 @@ function omni_get_people_wikidata( $term ) {
 			if ( isset ($claims->P20[0] ) ) {   //P20 is place of birth
 				$wd_death_place = omni_wd_place( $claims->P20[0], true );
 			}
+			if ( isset ($claims->P213[0] ) ) {   //P213 is ISNI ID
+				$wd_ISNI = get_wikidata_value( $claims->P213[0] );
+			}
+			if ( isset ($claims->P214[0] ) ) {   //P213 is VIAF ID
+				$wd_VIAF = get_wikidata_value( $claims->P214[0] );
+				echo $wd_VIAF;
+			}
 			$args['description'] = $wd_description;
     		$args['name'] = $wd_name;
 			if (WP_DEBUG) {
@@ -242,6 +264,8 @@ function omni_get_people_wikidata( $term ) {
     		update_term_meta( $term_id, 'wd_birth_place', $wd_birth_place );
     		update_term_meta( $term_id, 'wd_death_year',  $wd_death_year );
     		update_term_meta( $term_id, 'wd_death_place', $wd_death_place );
+    		update_term_meta( $term_id, 'wd_ISNI', $wd_ISNI );
+    		update_term_meta( $term_id, 'wd_VIAF', $wd_VIAF );
     	
     		wp_update_term( $term_id, 'people', $args );
 
