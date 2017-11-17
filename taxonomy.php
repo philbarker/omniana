@@ -29,11 +29,11 @@ get_header(); ?>
 	<?php
 	if ( 'people' === $taxonomy ) {
 		get_template_part('content', 'person-description');
+	} elseif ( 'works' === $taxonomy ) {
+		get_template_part('content', 'work-description');
 	} else {
 		the_archive_title( '<h1 class="page-title">', '</h1>' );
 		the_archive_description( '<p class="page-description">', '</p>' );
-		echo( '<p class="page-description">
-		       Mentioned in the following articles.</p>' );
 	}
 	?>
 	</header>
