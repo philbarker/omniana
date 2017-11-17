@@ -151,12 +151,13 @@ add_action( 'people_edit_form_fields', 'omni_people_edit_fields', 20, 2 );
 function omni_works_edit_fields( $term, $taxonomy ) {
     $wd_id = ucfirst( get_term_meta( $term->term_id, 'wd_id', true ) );
     $wd_name = get_term_meta( $term->term_id, 'wd_name', true ); 
-    $wd_description = get_term_meta( $term->term_id, 'wd_description', true ); 
+    $wd_description = get_term_meta( $term->term_id, 'wd_description', true );
+    $wd_author = get_term_meta( $term->term_id, 'wd_author', true ); 
     ?>
-    <?php if (! empty($wd_publication_year)): ?>
+    <?php if (! empty($wd_author)): ?>
     <tr class="form-field term-group-wrap">
     	<th>From Wikidata</th>
-        <td><strong>Published: </strong><?php echo $wd_publication_year; ?>.
+        <td><strong>Author: </strong><?php echo $wd_author; ?>.
         </td>
     </tr>
     <?php endif; ?>

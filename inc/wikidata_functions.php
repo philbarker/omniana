@@ -124,4 +124,46 @@ function omni_get_people_wikidata( $term ) {
 }
 add_action( 'people_pre_edit_form', 'omni_get_people_wikidata' );
 
+function omni_get_author_name( $claim ) {
+	$wd_author_id = get_wikidata_value( $claim, 'id' );
+	$wd_author = omni_get_wikidata( $wd_author_id );
+	return $wd_author->entities->$wd_author_id->labels->en->value;
+}
+
+function omni_get_works_wikidata( $term ) {
+	$term_id = $term->term_id;
+    $wd_id = ucfirst( get_term_meta( $term_id, 'wd_id', true ) );
+   	$args = array();
+   	$wikidata = omni_get_wikidata($wd_id);
+   	if ( $wikidata ) {
+    	$wd_name = $wikidata->entities->$wd_id->labels->en->value;
+    	$wd_description = $wikidata->entities->$wd_id->descriptions->en->value;
+    	$claims = $wikidata->entities->$wd_id->claims;
+   		$type = get_wikidata_value($claims->P31[0], 'id');
+   		// check if human
+   		if ( 'Q386724' === $type ) {
+			if ( isset ($claims->P50[0] ) ) {   //P569 is date of birth
+				$wd_author = omni_get_author_name( $claims->P50[0] );
+			}
+			$args['description'] = $wd_description;
+    		$args['name'] = $wd_name;
+			if (WP_DEBUG) {
+				echo( 'Author :'.$wd_author.'<br />' );
+			}
+    		update_term_meta( $term_id, 'wd_name', $wd_name );
+    		update_term_meta( $term_id, 'wd_description', $wd_description );
+    		update_term_meta( $term_id, 'wd_author',  $wd_author );
+    	
+    		wp_update_term( $term_id, 'works', $args );
+
+   		} else { // not a creative work
+	   		echo(' Warning: that wikidata is not for a creative work,');
+	   		echo('  check the ID. <br /> ');
+   		} 
+   	} else {
+   		echo(' Warning: no wikidata for you, check the Wikidata ID. ');
+   	}
+}
+add_action( 'works_pre_edit_form', 'omni_get_works_wikidata' );
+
 
