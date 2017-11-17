@@ -17,6 +17,8 @@ $schema_description = $schema_terms['schema_description'];
 
 // schema properties for Person
 $schema_type = 'Person';
+$VIAF_base = 'http://viaf.org/viaf/';
+$ISNI_base = 'http://isni.org/isni/';
 $term_md = get_term_meta( $term_id );
 if (! empty($term_md['wd_birth_year'][0]) )
 	$schema_birthyear = schema_prop('span', 'birthDate', 
@@ -30,6 +32,13 @@ if (! empty($term_md['wd_death_year'][0]) )
 if (! empty($term_md['wd_death_place'][0]) )
 	$schema_deathplace = schema_prop('span', 'deathPlace', 
 	                                $term_md['wd_death_place'][0]);
+if (! empty($term_md['wd_VIAF'][0]) )
+	$schema_VIAF = schema_prop('a', 'sameAs', $term_md['wd_VIAF'][0],
+	                            $url = $VIAF_base.$term_md['wd_VIAF'][0]);
+if (! empty($term_md['wd_ISNI'][0]) ) {
+	$url =$ISNI_base.str_replace(' ', '', $term_md['wd_ISNI'][0]);
+	$schema_ISNI = schema_prop('a', 'sameAs', $term_md['wd_ISNI'][0], $url);
+}
 	                               
 // output title and description of person
 if ( $schema_name ) {
@@ -51,6 +60,18 @@ if ( $schema_description ) {
 		echo ' '.$schema_deathplace;
 	}
 	echo( '.</p>' );
+	if ( $schema_VIAF || $schame_ISNI) {
+		echo '<ul>';
+			if ( $schema_VIAF ) {
+				echo '<li>VAIF: '; 
+				echo $schema_VIAF.'. </li>';
+			}
+			if ( $schema_ISNI ) {
+				echo '<li> ISNI: '; 
+				echo $schema_ISNI.'. </li>';
+			}
+		echo '</ul>';
+	}
 } else {
 	the_archive_description( '<p class="page-description">', '</p>' );
 }
