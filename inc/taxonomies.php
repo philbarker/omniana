@@ -23,7 +23,7 @@ function register_omni_taxonomies() {
 	register_omni_taxonomy('events', 'chapter', 'event', 'events');
 	register_omni_taxonomy('works', 'chapter', 'work', 'works');
 }
-add_action( 'init', 'register_omni_taxonomies');
+//add_action( 'init', 'register_omni_taxonomies');
 
 function omni_add_taxonomy_admin_submenu($taxonomy, $title, $type) {
 	add_submenu_page(  
@@ -41,7 +41,7 @@ function omni_add_admin_menus() {
 	$menu_title = 'Taxonomies';
 	$capability = 'post';
 	$menu_slug  = 'taxonomies';
-	$function   = 'omni_display_admin_page';// Callback function which displays the page content.
+	$function   = 'wdtax_display_admin_page';// Callback function which displays the page content.
 	$icon_url   = 'dashicons-admin-page';
 	$position   = 10;
 	
@@ -52,16 +52,6 @@ function omni_add_admin_menus() {
 	omni_add_taxonomy_admin_submenu('works',  'works mentioned', 'chapter');
 }
 add_action( 'admin_menu', 'omni_add_admin_menus', 1 );
-
-function omni_display_admin_page() {
-        # Display custom admin page content from newly added custom admin menu.
-	echo '<div class="wrap">' . PHP_EOL;
-	echo '<h2>Index Taxonomies</h2>' . PHP_EOL;
-	echo '<p>Choose taxonomy to edit.</p>' . PHP_EOL;
-	echo '</div><!-- end .wrap -->' . PHP_EOL;
-	echo '<div class="clear"></div>' . PHP_EOL;
-}
-
 
 function omni_taxonomies_add_fields( $taxonomy ) {
     ?>

@@ -12,6 +12,6 @@ function omniana_theme_setup() {
 add_action( 'after_setup_theme', 'omniana_theme_setup' );
 
 $omniana_dir = get_stylesheet_directory();
-include_once( $omniana_dir.'/inc/taxonomies.php' );
-include_once( $omniana_dir.'/inc/taxonomy_theme_functions.php' );
-include_once( $omniana_dir.'/inc/wikidata_functions.php' );
+//include_once( $omniana_dir.'/inc/taxonomies.php' );
+//include_once( $omniana_dir.'/inc/taxonomy_theme_functions.php' );
+//include_once( $omniana_dir.'/inc/wikidata_functions.php' );
