@@ -1,0 +1,81 @@
+// Pages
+
+// Override variables above this line, using the !default flag to allow further overrides.
+@import 'variables/pages';
+
+// Add custom SCSS below these imports and includes.
+@import 'components/pages';
+
+.clearfix {
+ clear: both;
+}
+
+@media screen and (min-width: 768px) {
+ .single #content,
+ #content {
+   width: 410px;
+   min-height: 660px;
+   padding-left: 80px;
+   padding-right: 80px;
+ }
+ #wrap {
+   width: 600px //fixes a problem with nav icons at med screen width
+ }
+ 
+}
+
+.title-page .entry-content, 
+.halftitle .entry-content {
+ margin-top:200px;
+}
+.halftitle .entry-content {
+ margin-bottom:200px;
+}
+
+// formatting the footer on all pages //
+
+.footer .inner {
+ font-family: $font-2;
+ font-weight: normal;
+ width: 80%;
+ padding: 0px;
+ padding-top: 30px;
+}
+
+@media screen and (min-width: 768px) {
+ div.footer div.inner div.omni-left {
+  float: left;
+  width: 33%;
+  clear: right;
+ }
+ div.footer div.inner div.omni-right {
+  float: right;
+  width: 66%;
+ }
+}
+
+.omni-bookinfo, .cie-name{
+ text-align: left;
+ text-indent: -2em;
+ padding-left: 2em ;
+ font-size: 0.9em;
+ line-height: 1.2em;
+ margin-bottom: 1em; 
+}
+p.omni-bookinfo span.key {
+ font-weight: bold;
+}
+p.omni-bookinfo span.info {
+ font-weight: normal !important;
+}
+
+.footer .license-attribution p {
+ text-align: left;
+ text-indent: 0px;
+ font-size: 0.9em;
+ line-height: 1.2em;
+ margin-bottom: 1em; 
+}
+.footer .license-attribution img {
+  margin-right: 1em;
+} 

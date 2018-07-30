@@ -1,147 +1,15 @@
 /*
- Theme Name:   Omniana
- Theme URI:    http://example.com/omniana
- Description:  Omniana, child theme of pressbooks-book
+ Theme Name: Omniana
+ License: GPL 2.0+
+ Version: 1.0
  Author:       Phil Barker
  Author URI:   https://people.pjjk.net/phil
- Template:     pressbooks-book
- Version:      0.0.1
- License:      GNU General Public License v2 or later
- License URI:  http://www.gnu.org/licenses/gpl-2.0.html
- Tags:         
- Text Domain:  omniana
+
+ Text Domain: omniana
+ Template: pressbooks-book
 */
 
-/*
- 1. front matter styles
- 2. article styles
-*/
-
-/* Front matter styles */
-
-@font-face {
-  font-family: "Canterbury";
-  src: url('fonts/Canterbury.ttf'); 
-  font-weight: normal;  
-  }
-div.halftitle {
-  margin-top: 8em;
-  margin-bottom: 8em;
-  text-align: center;
-}
-
-div.title-page h1,
-div.halftitle h1 {
-  font-family:"Canterbury", serif;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-	
-}
-
-h1.entry-title {
-  font-family: "Times New Roman", "Droid Serif", serif;
-}
-
-div.printer-info {
-  margin-top: 16em;
-  margin-bottom: 1em;
-  text-align: center;
-}
-
-div.title-page {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  text-align: center;
-}
-
-div.title-page div.entry-content h1,
-div.halftitle h1 {
-  font-size: 2em;
-  font-weight: normal;
-  margin-top: 3em;
-  margin-bottom: 2em;
-}
-
-div.title-page div.entry-content h2,
-div.halftitle h2 {
-  font-size: 1.5em;
-  margin-top: 3em;
-  margin-bottom: 3em;
-}
-
-div.contents {
-  margin-top: 2em;
-  text-align: center;
-}
-
-div.contents div.entry-content h1, {
-  font-size: 1.5em;
-  margin-top: 3em;
-  margin-bottom: 1em;
-}
-div.contents div.entry-content p {
-  font-weight: bold;
-  font-size: 1.2em;
-}
-div.contents div.entry-content table,
-div.contents div.entry-content th,
-div.contents div.entry-content tr,
-div.contents div.entry-content td {
-  border: 0px none none;
-  border-collapse: collapse;
-}
-
-div.footer div.inner {
-    margin: 0;
-    width: 100%;
-    font-family: "Open Sans", Ariel, Helvetica, sans-serif;
-}
-div.footer div.inner div.omni-left {
-    float: left;
-    width: 40%;
-    font-size: 1em;
-}
-div.footer div.inner div.omni-left dt,
-div.footer div.inner div.omni-left dd {
-    vertical-align: top;
-}
-div.footer div.inner div.omni-right {
-    float: right;
-    width: 60%
-}
-div.footer div.inner div.omni-right div.license-attribution p{
-    text-align: left;
-    font-size: 1em;
-}
+/* This doesn't do anything. */
 
 
-/* Article stles */
-h2.entry-title {
- margin: 10px;
- border: 0px;
- padding: 0px;
- text-align: center;
- text-transform: capitalize;
- font-family: "droid serif", "Times New Roman", serif; 
- font-style: italic;
- font-size: 1.5em;
-}
-
-blockquote {
-    background-image: none;
-    background-color: transparent;
-    font-style: italic;
-    margin: 5px;
-}
-
-blockquote p {
-    margin: 0;
-    padding: 0;
-}
-
-.quotecite {
-    font-style: normal;
-    text-align: right;
-}
 
