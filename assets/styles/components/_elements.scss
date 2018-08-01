@@ -1,9 +1,9 @@
 // Elements
 
 $body-line-height: (
-  epub: 1.4em,
-  prince: 1.4em,
-  web: 1.4em,
+  epub: 1.5em,
+  prince: 1.5em,
+  web: 1.5em,
 ) !default;
 
 $h2-font-family: $font-1 !default;
@@ -12,7 +12,7 @@ $h1-font-family: $font-1 !default;
 $para-align: (
   epub: initial,
   prince: justify,
-  web: justify
+  web: justify,
 ) !default;
 
 $blockquote-font-size: 0.95em !default;
@@ -28,6 +28,10 @@ $blockquote-font-style: italic !default;
 
 // Add custom SCSS below these imports and includes.
 @import 'components/elements';
+
+p {
+  text-indent: 1em;
+}
 
 blockquote {
   background-color: transparent;
@@ -46,12 +50,27 @@ blockquote p {
   margin: 0px;
 }
 
-p.quotecite {
+.quote-cite {
   margin-top: 0px;
   margin-bottom: 0.5em;
   margin-left:2.5em;
   font-style: italic;
   text-align: right;
+}
+
+.quote-cite p {
+  margin-top: 0px;
+  font-style: italic;
+  text-align: right;
+}
+
+.page_num {
+   position: absolute;
+   left: 0px;
+   text-indent: 0px;
+   width: 2em;
+   text-align: right;
+   color: rgb(220,224,252)
 }
 
 sup.footnote {
@@ -62,7 +81,7 @@ div.footnotes {
   font-size: 0.8em;
   line-height: 1.1em;
   margin-bottom: 1em;
-  margin-top: 1em;  
+  margin-top: 1em;
 }
 
 div.printer-info {
@@ -107,7 +126,7 @@ li.chapter {
  padding: 10px 0 0 4px;
 
 //sorting out shadow border
- 
+
  h1, h2, h3, h4, h5, p, ul, li {
   text-align: left;
   margin: 0px;
