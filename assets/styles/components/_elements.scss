@@ -83,7 +83,8 @@ div.poem p{
    text-indent: 0px;
    width: 2em;
    text-align: right;
-   color: rgb(220,224,252)
+   color: rgb(200,204,232);
+   font-size: 0.7em;
 }
 
 sup.footnote {
@@ -120,8 +121,6 @@ li.front-matter a{
 li.chapter {
  margin-top: 0px;
 }
-
-
 
 // meta links, page turning, edit button and the like //
 @media screen and (min-width: 768px) {
