@@ -59,6 +59,7 @@ div.poem {
 
 div.poem p{
   text-indent: 0px;
+  margin-bottom: 1em;
 }
 
 .quote-cite {
@@ -99,7 +100,11 @@ div.footnotes {
   margin-bottom: 1em;
   margin-top: 1em;
 }
-
+div.centered,
+div.centered p {
+  text-align: center;
+  margin-top: 1em;
+}
 div.printer-info {
  margin-top: 550px;
 }
